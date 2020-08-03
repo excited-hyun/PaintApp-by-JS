@@ -1,5 +1,6 @@
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
+const colors = document.getElementsByClassName("jsColor");
 
 canvas.width = 700;
 canvas.height = 700;
@@ -21,21 +22,21 @@ function onMouseMove(event){        //마우스 움직이는 내내 발생
     const x = event.offsetX;
     const y = event.offsetY;
     if(!painting){
-        console.log("creating path in", x, y);
+        //console.log("creating path in", x, y);
         ctx.beginPath();
         ctx.moveTo(x, y);
     } 
     else {
-        console.log("creating line in", x, y);
+        //console.log("creating line in", x, y);
         ctx.lineTo(x, y);
         ctx.stroke();
     }
 }
 
-function onMouseDown(event) {
-    painting = true;
+function handleColor(event){
+    const color = event.target.style.backgroundColor;
+    ctx.strokeStyle = color;
 }
-
 
 if (canvas) {
     canvas.addEventListener("mousemove", onMouseMove);
@@ -43,3 +44,5 @@ if (canvas) {
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
 }
+
+Array.from(colors).forEach(color => color.addEventListener("click", handleColor))
