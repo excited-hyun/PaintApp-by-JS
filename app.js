@@ -1,6 +1,8 @@
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
+const range = document.getElementById("jsRange");
+const mode = document.getElementById("jsMode");
 
 canvas.width = 700;
 canvas.height = 700;
@@ -9,6 +11,7 @@ ctx.strokeStyle = "#2c2c2c";
 ctx.lineWidth = 2.5;
 
 let painting = false;
+let filling = false;
 
 function stopPainting(){
     painting = false;
@@ -33,9 +36,25 @@ function onMouseMove(event){        //마우스 움직이는 내내 발생
     }
 }
 
-function handleColor(event){
+function handleColorClick(event){
     const color = event.target.style.backgroundColor;
     ctx.strokeStyle = color;
+}
+
+function handleRangeChange (event) {
+    const size = event.target.value;
+    ctx.lineWidth = size
+}
+
+function handleModeClick(event){
+    if (filling === true){
+        filling = false;
+        mode.innerText = "FILL";
+    }
+    else{
+        filling = true;
+        mode.innerText = "PAINT";
+    }
 }
 
 if (canvas) {
@@ -45,4 +64,14 @@ if (canvas) {
     canvas.addEventListener("mouseleave", stopPainting);
 }
 
-Array.from(colors).forEach(color => color.addEventListener("click", handleColor))
+Array.from(colors).forEach(color => 
+    color.addEventListener("click", handleColorClick)
+);
+
+if(range){
+    range. addEventListener("input", handleRangeChange);
+}
+
+if(mode){
+    mode.addEventListener("click", handleModeClick);
+}
